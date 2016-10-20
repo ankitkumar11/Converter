@@ -1,0 +1,49 @@
+configurations {
+    jaxb
+}
+
+dependencies {
+    jaxb (
+            "javax.xml.bind:jaxb-api:${jaxbVersion}",
+            "com.sun.xml.bind:jaxb-xjc:${jaxbVersion}",
+            "com.sun.xml.bind:jaxb-core:${jaxbVersion}",
+            "com.sun.xml.bind:jaxb-impl:${jaxbVersion}",
+            "org.jvnet.jaxb2_commons:jaxb2-basics-ant:0.11.1",
+            "org.jvnet.jaxb2_commons:jaxb2-fluent-api:3.0",
+            "org.jvnet.jaxb2_commons:jaxb2-commons-lang:2.4",
+    )
+}
+
+task ndcXJC() {
+    ext.schemaDir = "src/main/resources"
+    ext.outputDir = "${projectDir}/build/generated/xjc"
+    ext.ndc   = ['ndc/*.xsd']
+    ext.bindings  = []
+    ext.classes   = []
+    ext.args      = ["-Xfluent-api", "-Xcommons-lang", "-Xcommons-lang:ToStringStyle=SHORT_PREFIX_STYLE"]
+
+    doLast {
+        new File(outputDir).mkdirs()
+        ant.taskdef(
+                name: 'xjc',
+                classname: 'org.jvnet.jaxb2_commons.xjc.XJC2Task',
+                classpath: configurations.jaxb.asPath)
+        ant.xjc(
+                destDir: outputDir,
+                extension: 'true') {
+            schema(dir: schemaDir, includes: ndc.join(' '))
+            args.each { val ->
+                arg(value: val)
+            }
+        }
+    }
+}
+
+if (plugins.hasPlugin('java')) {
+    ndcXJC.dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
+    compileJava.dependsOn(ndcXJC)
+}
+
+sourceSets.main.java {
+    srcDir 'build/generated/xjc'
+}

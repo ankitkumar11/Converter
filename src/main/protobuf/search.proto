@@ -1,0 +1,87 @@
+import "base.proto";
+import "types.proto";
+import "flightItin.proto";
+
+package navigo;
+
+option java_package                                                  = "com.nxl.navigo.api.proto.search";
+option java_multiple_files                                           = true;
+
+message SearchRequest {
+    extend Request {
+        optional SearchRequest request                               = 101; // Unique Search Request extension number
+    }
+
+    message Passenger {
+        required PassengerType type                                   = 1;
+        required uint32 quantity                                      = 2;
+    }
+
+    message FlightSearch {
+        required uint32 sequence                                      = 1;
+        required string departureAirport                              = 2;
+        required string arrivalAirport                                = 3;
+        required string departureDate                                 = 4;
+    }
+
+    repeated Passenger passenger                                      = 1;
+    repeated FlightSearch flightSearch                                = 2;
+    //repeated string pcc                                             = 3;
+    optional TripType tripType										  = 4;
+	repeated InclusiveFlights inclusiveFlights						  = 5;
+    optional bool directFlight                                        = 6;
+    optional TravelClass travelClass                                  = 7;
+    optional string preferredAirlines                                 = 8;
+    optional CurrencyCode currencyCode								  = 9;
+    optional bool isBMTFlow                                           = 10;
+    optional bool isB2bFlow                                           = 11;
+}
+
+message SearchResponse {
+    extend Response {
+        optional SearchResponse response                               = 101; // Unique Search response extension number
+    }
+
+	message PriceClassComments {
+		optional string priceClassName									= 1;
+		repeated string text											= 2;
+		optional string derivedPriceClassName							= 3;
+	}
+	
+    message CommonInfo {
+        optional string info                                            = 1;
+		optional double dayLowestFare									= 2;
+		optional string currenyCode										= 3;
+		repeated PriceClassComments priceClassComment					= 4;
+    }
+
+    message OriginDestinationInfo {
+        repeated CommonInfo common                                      = 1;
+		repeated FlightItinerary flightItinerary						= 2;
+        optional PriceInfo priceInfo                                    = 3;
+        optional OriginDestinationType type                             = 4;
+    }
+
+    message ResponseHolder {
+        optional Source source                                          = 1;
+        repeated OriginDestinationInfo originDestination                = 2;
+		optional TripTypeInternal tripTypeInternal						= 3;
+    }
+	
+	message Error {
+		optional string code											= 1;
+		optional string type											= 2;
+		repeated string messages										= 3;
+	}
+	
+	message Reporting {
+		required string code											= 1;
+		optional string message											= 2;
+		optional string tripType										= 3;
+	}
+	
+    optional uint64 timestamp                                           = 1;
+	repeated ResponseHolder responseHolder								= 2;
+	optional Error error												= 3;
+	repeated Reporting reporting										= 4;
+}

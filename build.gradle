@@ -1,0 +1,46 @@
+
+apply plugin: 'java'
+apply plugin: "com.google.protobuf"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.7.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+}
+
+dependencies {
+    compile 'com.google.protobuf:protobuf-java:3.0.0'
+    compile "com.googlecode.protobuf-java-format:protobuf-java-format:1.2"
+    compile 'io.grpc:grpc-stub:1.0.0-pre2'
+    compile 'io.grpc:grpc-protobuf:1.0.0-pre2'
+    compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
+}
+
+
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/protobuf'
+            include '*.proto'
+        }
+        java {
+            srcDir 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+apply from: "./jaxb.gradle"

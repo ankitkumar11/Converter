@@ -1,0 +1,125 @@
+package navigo;
+
+option java_package                            = "com.nxl.navigo.api.proto.types";
+option java_multiple_files                     = true;
+
+enum Type {
+    PING                                       = 1;
+    SEARCH                                     = 2;
+	PRICE									   = 3;
+	AIRBOOK									   = 4;
+	SEATMAP									   = 5;
+	RULES									   = 6;
+	AIRBOOKMODIFY							   = 8;
+	RETRIEVEPNR								   = 7;
+	API_SEARCH								   = 9;
+	PRICE_REVIEW   							   = 10;
+	BOOKING   							       = 11;
+	RETRIEVEPNRSERVICE 						   = 12;
+	APPLY_PAYMENT							   = 13;
+	CANCEL_PNR								   = 14;
+	SABRE_PRICE_REVIEW 						   = 15;
+}
+
+enum Status {
+    SUCCESS                                    = 1;
+    ERROR                                      = 2;
+}
+
+enum PassengerType {
+    ADT                                        = 1;
+    CHD                                        = 2;
+    INF                                        = 3;
+    JCB										   = 4;
+    CNN										   = 5;  
+}
+
+enum MarkupType {
+    AMT                                        = 1;
+    PERC                                       = 2;
+}
+
+enum Source {
+    AC_AC2U                                    = 1;
+    WS_AC2U                                    = 2;
+    SABRE                                      = 3;
+    CB_AC2U				                       = 4;
+    CB_SABRE								   = 5;
+}
+
+enum TripType {
+    OW                                        = 1;
+    RT                                        = 2;
+    OJ										  = 3;
+}
+
+enum TripTypeInternal {
+	RT_AC									  = 1;
+	RT_WS									  = 2;
+	OW_OB_AC								  = 3;
+	OW_IB_AC								  = 4;
+	OW_OB_WS								  = 5;
+	OW_IB_WS								  = 6;
+    OW_SABRE                                  = 7;
+    RT_SABRE                                  = 8;
+    OW_OB_SABRE								  = 9;
+    OW_IB_SABRE							      =10;
+}
+
+enum InclusiveFlights {
+	AC_GEN									  = 1;
+	WS_GEN									  = 2;
+	AC_SPL									  = 3;
+	WS_SPL									  = 4;
+	CB_GDS									  = 5;
+}
+
+enum OriginDestinationType {
+    OB                                        = 1;
+    IB                                        = 2;
+    CP                                        = 3;
+}
+
+enum TravelClass {
+    ECONOMY                                   = 1;
+    PREMIUM_ECONOMY                           = 2;
+    BUSINESS                                  = 3;
+    PREMIUM_BUSINESS                          = 4;
+    FIRST                                     = 5;
+    PREMIUM_FIRST                             = 6;
+}
+
+enum Provider {
+	AC										  = 1;
+	WS										  = 2;
+	AC_DUAL									  = 3;
+	WS_DUAL									  = 4;
+	SB										  = 5;
+}
+
+enum ApiKey {
+	WS_API									  = 1;
+	AC_API									  = 2;
+	SB_API									  = 3;
+}
+
+
+enum GroupName{
+	ACAPI										  = 1;
+	WSAPI										  = 2;
+	CBAPI										  = 3;
+	SBAPI										  = 4;
+}
+ 
+enum AirPriceRequestType {
+	REVIEW									  	  = 1;
+	OPTIONALSERVICES							  = 2;
+}
+
+enum CurrencyCode{
+	CAD										  = 1;
+	USD										  = 2;
+}
+
+ 
+

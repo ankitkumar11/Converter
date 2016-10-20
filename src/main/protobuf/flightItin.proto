@@ -1,0 +1,172 @@
+import "base.proto";
+import "types.proto";
+
+package navigo;
+
+option java_package 									= "com.nxl.navigo.api.proto.search.flight";
+option java_multiple_files								= true;
+
+message PriceInfo{
+
+	message Tax {
+		required double amount						= 1;
+		optional string taxDesignator 				= 2;
+		optional string taxDescription				= 3;
+	}
+
+	message PriceSegmentInfo {
+		optional string priceClass					= 1;
+		optional string segmentIdRef				= 2;
+		optional string travelerIdRef				= 3;
+		optional string classOfService				= 4;
+		optional string fareRefKey					= 5;
+		optional string fareBasisCode				= 6;
+	}
+
+	optional string priceClassName					= 1;
+	optional string fareType 						= 2;
+	optional double baseFare						= 3;
+	optional double totalFare						= 4;
+	optional double totalTax						= 5;
+	repeated Tax taxes								= 6;
+	repeated PriceSegmentInfo priceSegmentInfo		= 7;
+	optional string bookKey                         = 8;
+	optional string derivedPriceClassName			= 9;
+	optional string paxFareType 					= 10;
+	optional double totalItinPrice 					= 11;
+}
+
+message MarkupRules{
+
+	message Markup {
+		optional double amount 							= 1;
+		optional string decimalPlaces					= 2;
+	}
+
+	message Discount {
+		optional double amount 							= 1;
+		optional string decimalPlaces					= 2;
+	}
+	
+	message FareType {
+		optional string code 							= 1;
+		optional string quantity						= 2;
+	}
+	
+	message FareBasisCode {
+		optional string classOfService  				= 1;
+		optional string departureAirportCode			= 2;
+		optional string arrivalAirportCode				= 3;
+	}
+	
+	message DetailsCreditCard {
+		message CcTypesSelected {
+			optional string code 						= 1;
+		}
+		repeated CcTypesSelected ccTypesSelected 		= 1;
+		optional bool ccAllowed 						= 2;
+	}
+	
+	message MarkupDetails {
+		message RewardPoints {
+		
+			message Agent {
+				optional double adult 					= 1;
+				optional double child 					= 2;
+			}
+			message Agency {
+				optional double adult 					= 1;
+				optional double child 					= 2;
+			}
+			
+			repeated Agent agent 						= 1;
+			repeated Agency agency 						= 2;
+		}
+		
+		message DetailsTourCode {		
+			message TourCode {
+				optional string adult 					= 1;
+				optional string child 					= 2;
+			}			
+			repeated TourCode tourCode 					= 1;
+			optional bool tourCodeAllowed 				= 2;
+		}
+		
+		message DetailsAdult {
+			optional double markupValue 				= 1;
+			optional string markupType					= 2;
+			optional double discountValue 				= 3;
+			optional string discountType				= 4;
+			optional double markupAmount 				= 5;
+			optional double discountAmount				= 6;
+		}
+		message SalesTax {
+			optional string gst 						= 1;
+			optional string pst							= 2;
+			optional string totalSalesTax				= 3;
+		}
+		
+		repeated RewardPoints rewardPoints 				= 1;
+		repeated DetailsTourCode detailsTourCode 		= 2;
+		repeated DetailsAdult detailsAdult 				= 3;
+		repeated SalesTax salesTax 						= 4;
+	}
+	
+	
+
+	optional string ruleApplied							= 1;
+	optional bool eticketAllowed 						= 2;
+	repeated Markup markup								= 3;
+	repeated Discount discount							= 4;
+	repeated DetailsCreditCard detailsCreditCard		= 5;
+	repeated MarkupDetails markupDetails				= 6;
+	repeated FareType fareType							= 7;
+	repeated FareBasisCode fareBasisCode				= 8;
+}
+
+message FlightItinerary {
+
+	message FlightSegmentsInfo {
+
+		message DepartureOrArrival {
+			required string airportCode					= 1;
+			optional string airportName					= 2;
+			required string date						= 3;
+			optional string time						= 4;
+			optional string terminal					= 5;			
+		}
+
+		message Carrier {
+			required string airlineCode 				= 1;
+			required string flightNumber				= 2;
+			optional string airlineName					= 3;
+		}
+
+		message Equipment {
+			optional string code						= 1;
+			optional string name						= 2;
+		}
+
+		message OperatingCarrier {
+			optional string airlineCode					= 1;
+			optional string airlineName					= 2;
+		}
+
+		required DepartureOrArrival departure			= 1;
+		required DepartureOrArrival arrival 			= 2;
+		optional Carrier carrier 						= 3;
+		optional Equipment equipment					= 4;
+		optional bool electronicTicketing				= 5;
+		optional string flightDuration					= 6;
+		optional string frequency						= 7;
+		optional int32 numberOfStops					= 8;
+		optional bool meals								= 9;
+		optional OperatingCarrier operatingCarrier		= 10;
+		optional string classOfService                	= 11;
+	}
+
+	optional string flightProvider						= 1;
+	repeated PriceInfo priceInfo 						= 2;
+	repeated FlightSegmentsInfo flightSegmentInfo		= 3;
+	repeated MarkupRules markupRules					= 4; 
+}
